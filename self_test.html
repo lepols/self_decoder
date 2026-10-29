@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кто ты на самом деле?</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Comfortaa:wght@700&display=swap">
+<style>
+:root{--bg:#fde8f1;--glow:#e6d8ff;--glow2:#ffe9c9;--card:rgba(255,255,255,.72);--ink:#5b3a6e;--soft:#7d6296;--line:#f5c6dc;--btn:#ffaed0;--btnink:#4a2145;--sun:#ffe9a8;
+--w:clamp(150px,38vw,230px);--h:calc(var(--w)*.68);--left:max(12px,calc(50vw - var(--w)/2 - 10vw));--bottom:14px;--dur:7s;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b2142;--glow:#5a3f80;--glow2:#6b3a55;--card:rgba(66,50,98,.72);--ink:#fde8f1;--soft:#cdb8e8;--line:#5d4a88;--btn:#ffaed0;--btnink:#3d1a3b;--sun:#f1d77d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2b2142;--glow:#5a3f80;--glow2:#6b3a55;--card:rgba(66,50,98,.72);--ink:#fde8f1;--soft:#cdb8e8;--line:#5d4a88;--btn:#ffaed0;--btnink:#3d1a3b;--sun:#f1d77d;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;min-height:100dvh;background:radial-gradient(ellipse 80% 40% at 50% 0,var(--glow),transparent 70%) no-repeat,radial-gradient(ellipse 70% 40% at 100% 100%,var(--glow2),transparent 70%) no-repeat,var(--bg);color:var(--ink);font:1.05rem/1.6 Nunito,'Trebuchet MS',system-ui,sans-serif;overflow-x:hidden}
+.screen{display:none;min-height:100vh;min-height:100dvh;padding:28px 20px 40px;flex-direction:column;justify-content:center;max-width:480px;margin:0 auto}
+main{position:relative;z-index:1}
+i,em{font-style:normal}
+#sky{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+#sky i{position:absolute;font-style:normal;line-height:1}
+.hrt{bottom:-10%;color:#ff8fb8;opacity:.3;animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(0) rotate(-12deg)}to{transform:translateY(-115vh) rotate(14deg)}}
+.str{color:#ffd86b;animation:twinkle ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:1;transform:scale(1.1)}}
+.screen.on{display:flex;animation:fade .5s ease both}
+@keyframes fade{from{opacity:0}}
+h1,h2,.script{font-family:Comfortaa,Nunito,system-ui,sans-serif;font-weight:700;line-height:1.3;margin:0 0 14px}
+h1{font-size:clamp(1.8rem,8.5vw,2.5rem)}
+h2{font-size:clamp(1.3rem,5.5vw,1.7rem)}
+p{margin:0 0 20px}
+.muted{color:var(--soft)}
+button{font:inherit;color:inherit;cursor:pointer}
+.go-btn{background:var(--btn);color:var(--btnink);border:0;border-radius:999px;padding:15px 26px;font-weight:600;align-self:flex-start;box-shadow:0 4px 0 rgba(75,46,67,.25)}
+.go-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(75,46,67,.25)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.dots{display:flex;gap:8px;margin-bottom:22px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--btn)}
+.opts{display:grid;gap:12px}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;font-weight:700;backdrop-filter:blur(4px);background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px;transition:background .2s,transform .2s}
+.opt:active,.opt.pick{background:var(--sun);color:#3a1f2b;transform:scale(.98)}
+.opt .ic{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;line-height:1}
+.letters{grid-template-columns:1fr 1fr}
+.letters .opt{justify-content:center;font-family:Comfortaa,sans-serif;font-size:1.5rem;padding:16px}
+.bar{height:12px;border-radius:99px;background:var(--line);overflow:hidden;margin:18px 0}
+.bar b{display:block;height:100%;width:0;background:var(--btn);border-radius:99px;transition:width 6s linear}
+#msg{min-height:1.6em;transition:opacity .3s}
+.card{background:var(--card);backdrop-filter:blur(8px);border:2px solid var(--line);border-radius:32px;padding:26px 22px;box-shadow:0 10px 30px rgba(75,46,67,.12)}
+.card .sun{font-size:2.2rem;line-height:1;margin-bottom:6px}
+#r2{font-family:Comfortaa,Nunito,system-ui,sans-serif;font-weight:700;font-size:clamp(1.1rem,5vw,1.35rem);line-height:1.5;margin:16px 0}
+#res{padding-bottom:calc(var(--h) + var(--bottom) + 120px);justify-content:flex-start;padding-top:48px}
+/* turtle */
+#turtle{position:fixed;left:var(--left);bottom:var(--bottom);width:var(--w);display:none;pointer-events:none;z-index:5}
+#turtle.go{display:block;animation:crawl var(--dur) cubic-bezier(.45,.05,.55,.95) both}
+@keyframes crawl{from{transform:translate(calc(-1*(var(--left) + var(--w) + 40px)),calc(var(--bottom) + var(--h) + 40px))}}
+#turtle svg{display:block;width:100%;overflow:visible}
+.leg{transform-box:fill-box;transform-origin:50% 8%}
+.walk .la{animation:step 1s ease-in-out infinite}
+.walk .lb{animation:step 1s ease-in-out -.5s infinite}
+@keyframes step{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+.walk .shell{animation:bob 1s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-2px)}}
+.head{transform-origin:168px 98px;transition:transform .9s cubic-bezier(.5,0,.3,1)}
+.look .head{transform:rotate(-24deg) translate(-4px,2px)}
+.e2,.smile2,.cheek2{opacity:0;transition:opacity .7s}
+.look .e2,.look .smile2,.look .cheek2{opacity:1}
+.look .smile1,.look .e1 .hl{opacity:0}
+.smile1{transition:opacity .4s}
+.lid{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0)}
+.blink .lid{animation:blink 3.2s infinite}
+@keyframes blink{0%,90%,100%{transform:scaleY(0)}94%{transform:scaleY(1)}}
+.bubble{position:absolute;left:86%;translate:-72% 0;bottom:calc(100% + 6px);width:min(200px,56vw);background:#fffdf8;color:#4b2e43;border-radius:20px;padding:11px 14px;font:800 1rem/1.3 Nunito,system-ui,sans-serif;text-align:center;transform:scale(0);transform-origin:72% 100%;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.bubble::after{content:"";position:absolute;left:72%;top:100%;margin-left:-9px;border:9px solid transparent;border-top-color:#fffdf8;border-bottom:0}
+.say .bubble{animation:pop .5s cubic-bezier(.3,1.7,.5,1) forwards}
+@keyframes pop{to{transform:scale(1)}}
+@media (orientation:landscape) and (max-height:520px){
+ :root{--w:clamp(110px,30vh,170px);--left:calc(100vw - var(--w) - 8vw);--bottom:10px}
+ #res{margin:0 auto 0 5vw;max-width:min(480px,56vw);padding-bottom:40px;padding-top:24px}
+ .bubble{width:170px}
+}
+@media (prefers-reduced-motion:reduce){:root{--dur:2s}.hrt{display:none}.str{animation:none;opacity:.6}}
+</style>
+</head>
+<body>
+<div id="sky" aria-hidden="true"></div>
+<main>
+<section class="screen on" id="s0">
+ <h1>Кто ты на самом деле?</h1>
+ <p>Глубокий психологический тест из десяти вопросов. Узнай, кто скрыт в глубине твоей души. Готова?</p>
+ <button class="go-btn" id="start">Начать анализ личности</button>
+</section>
+<section class="screen" id="sq">
+ <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+ <h2 id="qt"></h2>
+ <div class="opts" id="qo"></div>
+</section>
+<section class="screen" id="sl">
+ <h2>Анализируем…</h2>
+ <div class="bar"><b id="fill"></b></div>
+ <p class="muted" id="msg" aria-live="polite"></p>
+</section>
+<section class="screen" id="res">
+ <div class="card">
+  <div class="sun">☀️</div>
+  <h2>Результаты теста</h2>
+  <p id="r1"></p>
+  <div id="r2"></div>
+  <p id="r3" style="margin:0"></p>
+ </div>
+</section>
+</main>
+
+<div id="turtle" aria-hidden="true">
+ <div class="bubble">Так вы придёте на меня смотреть?</div>
+ <svg viewBox="0 0 220 150">
+  <path d="M40 100 Q18 100 10 116 Q30 118 46 108Z" fill="#b9d3a0"/>
+  <rect class="leg la" x="62" y="98" width="22" height="30" rx="11" fill="#9cbf8a"/>
+  <rect class="leg lb" x="140" y="98" width="22" height="30" rx="11" fill="#9cbf8a"/>
+  <ellipse cx="110" cy="104" rx="74" ry="20" fill="#b9d3a0"/>
+  <rect class="leg lb" x="88" y="98" width="22" height="32" rx="11" fill="#b9d3a0"/>
+  <rect class="leg la" x="114" y="98" width="22" height="32" rx="11" fill="#b9d3a0"/>
+  <g class="shell">
+   <path d="M34 106 Q34 26 110 26 Q186 26 186 106 Q110 120 34 106Z" fill="#86b08f"/>
+   <polygon points="90,54 130,54 146,80 130,104 90,104 74,80" fill="none" stroke="#b5d6b8" stroke-width="4" stroke-linejoin="round"/>
+   <path d="M90 54 L82 38 M130 54 L138 38 M146 80 L170 74 M74 80 L50 74" stroke="#b5d6b8" stroke-width="4" stroke-linecap="round" fill="none"/>
+   <circle cx="110" cy="80" r="5" fill="#b5d6b8"/>
+  </g>
+  <g class="head">
+   <ellipse cx="172" cy="94" rx="16" ry="14" fill="#b9d3a0"/>
+   <circle cx="194" cy="80" r="22" fill="#b9d3a0"/>
+   <circle class="cheek1" cx="206" cy="88" r="4.5" fill="#f5a9a9" opacity=".75"/>
+   <circle class="cheek2" cx="182" cy="88" r="4.5" fill="#f5a9a9" opacity=".75"/>
+   <g class="e1"><circle cx="201" cy="76" r="6.5" fill="#fff"/><circle cx="203" cy="76" r="4" fill="#4b2e43"/><circle class="hl" cx="204.5" cy="74.5" r="1.4" fill="#fff"/><ellipse class="lid" cx="201" cy="70" rx="7" ry="6.5" fill="#b9d3a0"/></g>
+   <g class="e2"><circle cx="185" cy="77" r="6.5" fill="#fff"/><circle cx="184" cy="77" r="4" fill="#4b2e43"/><circle cx="185.5" cy="75.5" r="1.4" fill="#fff"/><ellipse class="lid" cx="185" cy="71" rx="7" ry="6.5" fill="#b9d3a0"/></g>
+   <path class="smile1" d="M198 90 Q205 95 211 89" stroke="#4b2e43" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+   <path class="smile2" d="M188 91 Q195 97 202 91" stroke="#4b2e43" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+ </svg>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const Q=[
+ {t:'Назови свой любимый цвет',o:[['Розовый зефир','#ffb3d1'],['Небесно-голубой','#aedcf7'],['Мятный','#b8ecd6'],['Сиреневый','#d4c1f5'],['Тёмно-синий','#2f4a8f']],sw:1},
+ {t:'Какое твоё тотемное животное?',o:[['Грациозная пантера','🐆'],['Ленивый котик','🐱'],['Милый енотик','🦝'],['Духовная черепаха','🐢']]},
+ {t:'Идеальное утро — это…',o:[['Кофе и тишина','☕'],['Блинчики в постель','🥞'],['Прогулка на рассвете','🌿'],['Ещё пять минут сна','😴']]},
+ {t:'Что ты возьмёшь с собой на необитаемый остров?',o:[['Любимую книгу','📚'],['Плейлист на все случаи','🎧'],['Годовой запас шоколада','🍫'],['Мягкого плюшевого друга','🧸']]},
+ {t:'Ты нашла в саду коробочку с бантиком. Что внутри?',o:[['Крошечный котёнок','🐈'],['Билеты в далёкое путешествие','🎟️'],['Уютный шарф и какао','🧣'],['Записка, от которой станет тепло','💌']]},
+ {t:'Как ты лучше всего отдыхаешь?',o:[['Тёплая ванна с пенкой','🛁'],['Кино под пледом','🎬'],['Что-нибудь творю','🎨'],['Выбираюсь на природу','🌳']]},
+ {t:'Какая погода сейчас у тебя в душе?',o:[['Ясное солнышко','☀️'],['Тёплый дождик с радугой','🌈'],['Переменная облачность','⛅'],['Уютная метель за окном','❄️']]},
+ {t:'Тебе дали волшебную палочку. Что сделаешь первым делом?',o:[['Наколдую десерт','🍰'],['Улечу в путешествие','✈️'],['Заведу целую стаю зверят','🐾'],['Исполню чью-нибудь мечту','🌟']]},
+ {t:'Какая сладость описывает тебя лучше всего?',o:[['Клубничный зефир','🍓'],['Капкейк с кремом','🧁'],['Тёплое печенье','🍪'],['Мороженое с посыпкой','🍦']]},
+ {t:'Сколько звёздочек нужно, чтобы загадать желание?',o:[['Одной хватит','✨'],['Трёх, на всякий случай','⭐'],['Всех сразу','🌌'],['Я сама звёздочка','🌠']]}
+];
+const LOAD=['Сканируем ауру…','Сверяем с таблицей Менделеева…','Подсчитываем уровень милоты…','Формируем вердикт…'];
+const P=[x=>`любимый цвет — «${x}»`,x=>`тотемное животное — «${x}»`,x=>`идеальное утро для тебя — «${x}»`,x=>`на необитаемый остров ты берёшь «${x}»`,x=>`в загадочной коробочке ты нашла бы «${x}»`,x=>`лучший отдых для тебя — «${x}»`,x=>`погода в твоей душе — «${x}»`,x=>`с волшебной палочкой ты бы сказала: «${x}»`,x=>`твоя сладость — «${x}»`,x=>`про звёздочки ты ответила: «${x}»`];
+const OK=['Такой набор ответов могло дать только настоящее солнышко.','Диагноз однозначный: ты чудо.','Такие ответы встречаются у одного человека на миллион, и этот человек — ты.','Это результат человека, рядом с которым всем становится теплее.','Вердикт науки: ты настоящее сокровище.','Это редкий вид людей: нежная, умная и невероятно обаятельная.','Такой ответ могло дать только настоящее солнышко.'];
+const END=['Ты самая лучшая! 💛','Ты невероятно милая! 🌸','Никогда не забывай, какая ты замечательная! ✨'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+let ctx,ans=[],busy=false;
+function tone(f1,f2,d,v,type){if(!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+d)}
+const pop=()=>{tone(700,180,.14,.25);setTimeout(()=>tone(420,260,.1,.12),90)};
+const tick=()=>tone(1400+Math.random()*300,900,.03,.025,'square');
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+function ask(i){
+ busy=false;const q=Q[i];$('#qt').textContent=q.t;
+ document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k<=i));
+ const box=$('#qo');box.innerHTML='';box.className='opts'+(q.letters?' letters':'');
+ q.o.forEach(([label,ic])=>{
+  const b=document.createElement('button');b.className='opt';
+  if(ic){const s=document.createElement('span');s.className='ic';if(q.sw){s.style.background=ic}else s.textContent=ic;b.appendChild(s)}
+  b.appendChild(document.createTextNode(label));
+  b.onclick=async()=>{if(busy)return;busy=true;b.classList.add('pick');ans[i]=label;await sleep(350);i<Q.length-1?ask(i+1):analyse()};
+  box.appendChild(b)});
+ show('sq');
+}
+async function analyse(){
+ show('sl');const f=$('#fill');f.style.transition='none';f.style.width='0';f.offsetWidth;f.style.transition='';f.style.width='100%';
+ for(const m of LOAD){$('#msg').style.opacity=0;await sleep(200);$('#msg').textContent=m;$('#msg').style.opacity=1;await sleep(1300)}
+ result();
+}
+async function type(el,text){el.textContent='';for(const ch of text){el.textContent+=ch;if(ch!==' '&&Math.random()<.5)tick();await sleep(32)}}
+async function result(){
+ show('res');['#r1','#r2','#r3'].forEach(s=>$(s).textContent='');
+ const i=Math.floor(Math.random()*10),j=(i+1+Math.floor(Math.random()*9))%10,t=k=>P[k](ans[k].toLowerCase());
+ await sleep(500);
+ await type($('#r1'),`Анализ показал: ${t(i)}, а ${t(j)}. Это говорит об одном.`);
+ await type($('#r2'),pick(OK));
+ await type($('#r3'),pick(END));
+ await sleep(1000);
+ turtle();
+}
+async function turtle(){
+ const t=$('#turtle');t.className='go walk';
+ await new Promise(r=>t.addEventListener('animationend',function h(e){if(e.animationName==='crawl'){t.removeEventListener('animationend',h);r()}}));
+ t.classList.remove('walk');await sleep(500);
+ t.classList.add('look');await sleep(900);
+ t.classList.add('say');pop();await sleep(900);
+ t.classList.add('blink');
+}
+$('#start').onclick=()=>{try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)()}catch(e){}ask(0)};
+addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
+(()=>{const s=$('#sky'),r=(a,b)=>a+Math.random()*(b-a);
+ for(let i=0;i<14;i++){const h=document.createElement('i');h.className='hrt';h.textContent='♥';Object.assign(h.style,{left:r(0,94)+'%',fontSize:r(16,44)+'px',animationDuration:r(14,28)+'s',animationDelay:-r(0,28)+'s'});s.appendChild(h)}
+ for(let i=0;i<22;i++){const t=document.createElement('i');t.className='str';t.textContent=['✦','✧','★','✶'][i%4];Object.assign(t.style,{left:r(0,96)+'%',top:r(0,94)+'%',fontSize:r(10,24)+'px',animationDuration:r(2,5)+'s',animationDelay:-r(0,5)+'s'});s.appendChild(t)}})();
+</script>
+</body>
+</html>
